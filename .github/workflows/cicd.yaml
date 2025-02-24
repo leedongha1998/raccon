@@ -9,7 +9,7 @@ on:
       - dev
 
 env:
-  PROJECT_JAR_NAME: raccoon
+  PROJECT_JAR_NAME: sparta-project-0.0.1-SNAPSHOT-plain.jar
 
 jobs:
   build:
