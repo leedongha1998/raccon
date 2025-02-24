@@ -35,15 +35,6 @@ jobs:
         run: ./gradlew clean build -x test
 
       - name: Upload build artifact
-        run:  |
-          ls -l build/libs
-          echo "Uploading: build/libs/$PROJECT_JAR_NAME.jar"
-          if [ -f "build/libs/$PROJECT_JAR_NAME.jar" ]; then
-            echo "JAR file exists!"
-          else
-            echo "JAR file does NOT exist!"
-            exit 1 # 빌드 실패 처리
-          fi
         uses: actions/upload-artifact@v4
         with:
           name: sparta-project-0.0.1-SNAPSHOT-plain.jar
