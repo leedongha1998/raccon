@@ -8,6 +8,9 @@ on:
     branches:
       - dev
 
+env:
+  PROJECT_JAR_NAME: raccoon
+
 jobs:
   build:
     runs-on: ubuntu-latest
