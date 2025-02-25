@@ -51,7 +51,7 @@
 │           │  ├─ store
 │           │  └─ user
 │           │     
-│           └─ mappe         
+│           └─ mapper         
 ├─ java
 │  └─ com
 │     └─ sparta
