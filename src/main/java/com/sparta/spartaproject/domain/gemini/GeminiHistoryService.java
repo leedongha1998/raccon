@@ -29,8 +29,8 @@ public class GeminiHistoryService {
 
 
     @Transactional(readOnly = true)
-    public List<GeminiHistoryResponseDto> getGeminiHistories(Pageable customPageable) {
-        return geminiHistoryRepository.findAllBySort(customPageable).stream().map(
+    public List<GeminiHistoryResponseDto> getGeminiHistories(Pageable customPageable, String name) {
+        return geminiHistoryRepository.findAllByRequestTextContaining(name, customPageable).stream().map(
             geminiMapper::toGeminiHistoryResponseDto
         ).toList();
     }

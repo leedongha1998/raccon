@@ -62,19 +62,19 @@ public class FoodService {
     }
 
     @Transactional(readOnly = true)
-    public Page<FoodDetailDto> getAllFoods(Pageable customPageable) {
-        Page<Food> foodList = foodRepository.findAll(customPageable);
+    public Page<FoodDetailDto> getAllFoods(Pageable customPageable, String name) {
+        Page<Food> foodList = foodRepository.findAllFoodList(name, customPageable);
 
         return getFoodDetailDtos(customPageable, foodList);
     }
 
     @Transactional(readOnly = true)
-    public Page<FoodDetailDto> getAllFoodsForStore(UUID storeId, Pageable customPageable) {
+    public Page<FoodDetailDto> getAllFoodsForStore(UUID storeId, Pageable customPageable, String name) {
         Store store = circularService.getStoreService().getStoreById(storeId);
 
         log.info("store.getName() : {}", store.getName());
 
-        Page<Food> foodList = foodRepository.findByStoreAndIsDisplayedIsTrueAndIsDeletedIsFalse(store, customPageable);
+        Page<Food> foodList = foodRepository.findByStoreAndIsDisplayedIsTrueAndIsDeletedIsFalse(store, name, customPageable);
 
         log.info("foodList.size() : {}", foodList.getTotalElements());
 
@@ -82,7 +82,7 @@ public class FoodService {
     }
 
     @Transactional(readOnly = true)
-    public Page<FoodDetailDto> getAllFoodsForStoreByOwner(UUID storeId, Pageable customPageable) {
+    public Page<FoodDetailDto> getAllFoodsForStoreByOwner(UUID storeId, Pageable customPageable, String name) {
         User user = circularService.getUserService().loginUser();
         Store store = circularService.getStoreService().getStoreById(storeId);
 
@@ -92,7 +92,7 @@ public class FoodService {
             }
         }
 
-        Page<Food> foodList = foodRepository.findByStoreAndIsDeletedIsFalse(store, customPageable);
+        Page<Food> foodList = foodRepository.findByStoreAndIsDeletedIsFalse(store, name, customPageable);
 
         return getFoodDetailDtos(customPageable, foodList);
     }

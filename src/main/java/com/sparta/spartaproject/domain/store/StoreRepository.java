@@ -69,9 +69,14 @@ public interface StoreRepository extends JpaRepository<Store, UUID> {
             "FROM Store s " +
             "LEFT JOIN FETCH s.storeCategories sc " +
             "LEFT JOIN FETCH sc.category c " +
-            "WHERE sc.category.id = :categoryId"
+            "WHERE sc.category.id = :categoryId " +
+            "AND s.name LIKE CONCAT('%', :name, '%')"
     )
-    Page<Store> getStoreListByCategoryId(Pageable pageable, @Param("categoryId") UUID categoryId);
+    Page<Store> getStoreListByCategoryIdAndNameContaining(
+        @Param("categoryId") UUID categoryId,
+        @Param("name") String name,
+        Pageable customPageable
+    );
 
     Optional<Store> findByIdAndIsDeletedIsFalse(UUID id);
 
@@ -89,7 +94,10 @@ public interface StoreRepository extends JpaRepository<Store, UUID> {
             "FROM Store  s " +
             "LEFT JOIN FETCH s.storeCategories sc " +
             "LEFT JOIN FETCH sc.category c " +
-            "WHERE s.isConfirmed IS FALSE"
+            "WHERE s.isConfirmed IS FALSE " +
+            "AND s.name LIKE CONCAT('%', :name, '%')"
     )
-    Page<Store> findAllByUnConfirmed(Pageable pageable);
+    Page<Store> findAllByUnConfirmed(@Param("name") String name, Pageable pageable);
+
+
 }
