@@ -119,10 +119,10 @@ public class StoreService {
     }
 
     @Transactional(readOnly = true)
-    public Page<StoreByCategoryDto> getStoresByCategory(Pageable customPageable, UUID categoryId) {
+    public Page<StoreByCategoryDto> getStoresByCategory(Pageable customPageable, UUID categoryId, String name) {
         Category category = categoryService.getCategoryById(categoryId);
 
-        Page<Store> storeListByCategoryId = storeRepository.getStoreListByCategoryId(customPageable, category.getId());
+        Page<Store> storeListByCategoryId = storeRepository.getStoreListByCategoryIdAndNameContaining(category.getId(), name, customPageable);
 
         List<StoreByCategoryDto> storeByCategoryDtoList = storeListByCategoryId.stream().map(
             store -> storeMapper.toStoreByCategoryDto(
@@ -213,8 +213,8 @@ public class StoreService {
     }
 
     @Transactional
-    public Page<StoreDetailDto> getUnconfirmedStores(Pageable customPageable) {
-        Page<Store> unconfirmedStoreList = storeRepository.findAllByUnConfirmed(customPageable);
+    public Page<StoreDetailDto> getUnconfirmedStores(Pageable customPageable, String name) {
+        Page<Store> unconfirmedStoreList = storeRepository.findAllByUnConfirmed(name, customPageable);
 
         List<StoreDetailDto> storeDetailDtoList = unconfirmedStoreList.stream().map(
             store -> storeMapper.toStoreDetailDto(

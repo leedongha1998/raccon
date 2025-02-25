@@ -38,8 +38,8 @@ public class ReviewService {
 
 
     @Transactional(readOnly = true)
-    public Page<ReviewDto> getReviews(Pageable customPageable) {
-        Page<Review> reviews = reviewRepository.findAllByIsDeletedIsFalse(customPageable);
+    public Page<ReviewDto> getReviews(Pageable customPageable, String name) {
+        Page<Review> reviews = reviewRepository.findAllByIsDeletedIsFalse(name, customPageable);
 
         List<ReviewDto> dtos = reviews.stream().map(
             review -> {
@@ -53,10 +53,10 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ReviewDto> getMyReviews(Pageable customPageable) {
+    public Page<ReviewDto> getMyReviews(Pageable customPageable, String name) {
         User user = circularService.getUserService().loginUser();
 
-        Page<Review> reviews = reviewRepository.findAllByUserIdAndIsDeletedIsFalse(customPageable, user.getId());
+        Page<Review> reviews = reviewRepository.findAllByUserIdAndContentContainingAndIsDeletedIsFalse(user.getId(), name, customPageable);
 
         List<ReviewDto> dtos = reviews.stream().map(
             review -> {
@@ -148,10 +148,10 @@ public class ReviewService {
     }
 
     @Transactional
-    public Page<ReviewDto> getReviewsForStore(UUID storeId, Pageable customPageable) {
+    public Page<ReviewDto> getReviewsForStore(UUID storeId, Pageable customPageable, String name) {
         Store store = circularService.getStoreService().getStoreByIdAndIsDeletedIsFalse(storeId);
 
-        Page<Review> reviews = reviewRepository.findAllByStoreIdAndIsDeletedIsFalse(customPageable, store.getId());
+        Page<Review> reviews = reviewRepository.findAllByStoreIdAndContentContainingAndIsDeletedIsFalse(store.getId(), name, customPageable);
 
         List<ReviewDto> dtos = reviews.stream().map(
             review -> {

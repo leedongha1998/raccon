@@ -32,10 +32,11 @@ public class GeminiHistoryController {
         @Min(value = 1, message = "페이지 번호는 1 이상이어야 합니다.")
         @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
         @RequestParam(value = "size", required = false) Integer size,
-        @RequestParam(value = "sortDirection", required = false) String sortDirection
+        @RequestParam(value = "sortDirection", required = false) String sortDirection,
+        @RequestParam(value = "name", required = false, defaultValue = "") String name
     ) {
         Pageable customPageable = pageableConfig.customPageable(page, size, sortDirection);
-        return ResponseEntity.ok(geminiHistoryService.getGeminiHistories(customPageable));
+        return ResponseEntity.ok(geminiHistoryService.getGeminiHistories(customPageable, name));
     }
 
     @Description(
