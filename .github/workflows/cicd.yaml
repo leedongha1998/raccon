@@ -80,6 +80,8 @@ jobs:
   deploy:
     needs: integration
     runs-on: ubuntu-latest
+    env:
+      DOCKER_IMAGE_NAME: raccoon
     steps:
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v0.1.10
