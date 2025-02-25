@@ -40,7 +40,7 @@ jobs:
         run: ls -lah build/libs/
 
       - name: chmod +r
-        run: chmod +r ${{ env.PROJECT_JAR_NAME }}
+        run: chmod +r build/libs/${{ env.PROJECT_JAR_NAME }}
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
