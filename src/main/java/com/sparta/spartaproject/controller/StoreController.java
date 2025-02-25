@@ -10,7 +10,6 @@ import com.sparta.spartaproject.dto.request.UpdateStoreRequestDto;
 import com.sparta.spartaproject.dto.request.UpdateStoreStatusRequestDto;
 import com.sparta.spartaproject.dto.response.StoreByCategoryDto;
 import com.sparta.spartaproject.dto.response.StoreDetailDto;
-import com.sparta.spartaproject.dto.response.StoreDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Description;
 import org.springframework.data.domain.Page;
@@ -50,9 +49,9 @@ public class StoreController {
     )
     @GetMapping
     public ResponseEntity<Page<StoreDetailDto>> getStores(
-        @RequestParam(required = false, defaultValue = "1") Integer page,
-        @RequestParam(required = false) Integer size,
-        @RequestParam(required = false) String sortDirection,
+        @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+        @RequestParam(value = "size", required = false) Integer size,
+        @RequestParam(value = "sortDirection", required = false) String sortDirection,
         @RequestParam(value = "name", required = false, defaultValue = "") String name
     ) {
         Pageable customPageable = pageableConfig.customPageable(page, size, sortDirection);
@@ -73,12 +72,13 @@ public class StoreController {
     @GetMapping("/categories/{categoryId}")
     public ResponseEntity<Page<StoreByCategoryDto>> getStoresByCategory(
         @PathVariable("categoryId") UUID categoryId,
-        @RequestParam(required = false, defaultValue = "1") Integer page,
-        @RequestParam(required = false) Integer size,
-        @RequestParam(required = false) String sortDirection
+        @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+        @RequestParam(value = "size", required = false) Integer size,
+        @RequestParam(value = "sortDirection", required = false) String sortDirection,
+        @RequestParam(value = "name", required = false, defaultValue = "") String name
     ) {
         Pageable customPageable = pageableConfig.customPageable(page, size, sortDirection);
-        return ResponseEntity.ok(storeService.getStoresByCategory(customPageable, categoryId));
+        return ResponseEntity.ok(storeService.getStoresByCategory(customPageable, categoryId, name));
     }
 
     @Description(
@@ -130,12 +130,13 @@ public class StoreController {
     )
     @GetMapping("/unconfirmed")
     public ResponseEntity<Page<StoreDetailDto>> getUnconfirmedStores(
-        @RequestParam(required = false, defaultValue = "1") Integer page,
-        @RequestParam(required = false) Integer size,
-        @RequestParam(required = false) String sortDirection
+        @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+        @RequestParam(value = "size", required = false) Integer size,
+        @RequestParam(value = "sortDirection", required = false) String sortDirection,
+        @RequestParam(value = "name", required = false, defaultValue = "") String name
     ) {
         Pageable customPageable = pageableConfig.customPageable(page, size, sortDirection);
-        return ResponseEntity.ok(storeService.getUnconfirmedStores(customPageable));
+        return ResponseEntity.ok(storeService.getUnconfirmedStores(customPageable, name));
     }
 
     @Description(

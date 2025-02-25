@@ -44,6 +44,8 @@ public class QStore extends EntityPathBase<Store> {
 
     public final ComparablePath<java.util.UUID> id = createComparable("id", java.util.UUID.class);
 
+    public final ListPath<com.sparta.spartaproject.domain.image.Image, com.sparta.spartaproject.domain.image.QImage> images = this.<com.sparta.spartaproject.domain.image.Image, com.sparta.spartaproject.domain.image.QImage>createList("images", com.sparta.spartaproject.domain.image.Image.class, com.sparta.spartaproject.domain.image.QImage.class, PathInits.DIRECT2);
+
     public final BooleanPath isConfirmed = createBoolean("isConfirmed");
 
     public final BooleanPath isDeleted = createBoolean("isDeleted");
@@ -53,6 +55,8 @@ public class QStore extends EntityPathBase<Store> {
     public final TimePath<java.time.LocalTime> openTime = createTime("openTime", java.time.LocalTime.class);
 
     public final com.sparta.spartaproject.domain.user.QUser owner;
+
+    public final ListPath<com.sparta.spartaproject.domain.review.Review, com.sparta.spartaproject.domain.review.QReview> reviews = this.<com.sparta.spartaproject.domain.review.Review, com.sparta.spartaproject.domain.review.QReview>createList("reviews", com.sparta.spartaproject.domain.review.Review.class, com.sparta.spartaproject.domain.review.QReview.class, PathInits.DIRECT2);
 
     public final EnumPath<Status> status = createEnum("status", Status.class);
 
