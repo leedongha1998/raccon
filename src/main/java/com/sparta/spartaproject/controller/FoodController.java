@@ -53,10 +53,11 @@ public class FoodController {
         @Min(value = 1, message = "페이지 번호는 1 이상이어야 합니다.")
         @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
         @RequestParam(value = "size", required = false) Integer size,
-        @RequestParam(value = "sortDirection", required = false) String sortDirection
+        @RequestParam(value = "sortDirection", required = false) String sortDirection,
+        @RequestParam(value = "name", required = false, defaultValue = "") String name
     ) {
         Pageable customPageable = pageableConfig.customPageable(page, size, sortDirection);
-        return ResponseEntity.ok(foodService.getAllFoods(customPageable));
+        return ResponseEntity.ok(foodService.getAllFoods(customPageable, name));
     }
 
     @Description(
@@ -68,10 +69,11 @@ public class FoodController {
         @Min(value = 1, message = "페이지 번호는 1 이상이어야 합니다.")
         @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
         @RequestParam(value = "size", required = false) Integer size,
-        @RequestParam(value = "sortDirection", required = false) String sortDirection
+        @RequestParam(value = "sortDirection", required = false) String sortDirection,
+        @RequestParam(value = "name", required = false, defaultValue = "") String name
     ) {
         Pageable customPageable = pageableConfig.customPageable(page, size, sortDirection);
-        return ResponseEntity.ok(foodService.getAllFoodsForStore(storeId, customPageable));
+        return ResponseEntity.ok(foodService.getAllFoodsForStore(storeId, customPageable, name));
     }
 
     @Description(
@@ -84,10 +86,11 @@ public class FoodController {
         @Min(value = 1, message = "페이지 번호는 1 이상이어야 합니다.")
         @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
         @RequestParam(value = "size", required = false) Integer size,
-        @RequestParam(value = "sortDirection", required = false) String sortDirection
+        @RequestParam(value = "sortDirection", required = false) String sortDirection,
+        @RequestParam(value = "name", required = false, defaultValue = "") String name
     ) {
         Pageable customPageable = pageableConfig.customPageable(page, size, sortDirection);
-        return ResponseEntity.ok(foodService.getAllFoodsForStoreByOwner(storeId, customPageable));
+        return ResponseEntity.ok(foodService.getAllFoodsForStoreByOwner(storeId, customPageable, name));
     }
 
     @Description(

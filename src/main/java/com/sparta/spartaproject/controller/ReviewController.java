@@ -31,7 +31,7 @@ public class ReviewController {
     private final PageableConfig pageableConfig;
 
     @Description(
-        "리뷰 전체 조회"
+        "리뷰 전체 조회 (관리자, 운영자)"
     )
     @GetMapping
     @PreAuthorize("hasAnyAuthority('MASTER', 'MANAGER')")
@@ -39,10 +39,11 @@ public class ReviewController {
         @Min(value = 1, message = "페이지 번호는 1 이상이어야 합니다.")
         @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
         @RequestParam(value = "size", required = false) Integer size,
-        @RequestParam(value = "sortDirection", required = false) String sortDirection
+        @RequestParam(value = "sortDirection", required = false) String sortDirection,
+        @RequestParam(value = "name", required = false, defaultValue = "") String name
     ) {
         Pageable customPageable = pageableConfig.customPageable(page, size, sortDirection);
-        return ResponseEntity.ok(reviewService.getReviews(customPageable));
+        return ResponseEntity.ok(reviewService.getReviews(customPageable, name));
     }
 
     @Description(
@@ -53,10 +54,11 @@ public class ReviewController {
         @Min(value = 1, message = "페이지 번호는 1 이상이어야 합니다.")
         @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
         @RequestParam(value = "size", required = false) Integer size,
-        @RequestParam(value = "sortDirection", required = false) String sortDirection
+        @RequestParam(value = "sortDirection", required = false) String sortDirection,
+        @RequestParam(value = "name", required = false, defaultValue = "") String name
     ) {
         Pageable customPageable = pageableConfig.customPageable(page, size, sortDirection);
-        return ResponseEntity.ok(reviewService.getMyReviews(customPageable));
+        return ResponseEntity.ok(reviewService.getMyReviews(customPageable, name));
     }
 
     @Description(
@@ -112,10 +114,11 @@ public class ReviewController {
         @Min(value = 1, message = "페이지 번호는 1 이상이어야 합니다.")
         @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
         @RequestParam(value = "size", required = false) Integer size,
-        @RequestParam(value = "sortDirection", required = false) String sortDirection
+        @RequestParam(value = "sortDirection", required = false) String sortDirection,
+        @RequestParam(value = "name", required = false, defaultValue = "") String name
     ) {
         Pageable customPageable = pageableConfig.customPageable(page, size, sortDirection);
-        return ResponseEntity.ok(reviewService.getReviewsForStore(storeId, customPageable));
+        return ResponseEntity.ok(reviewService.getReviewsForStore(storeId, customPageable, name));
     }
 
 }
