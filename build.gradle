@@ -13,8 +13,17 @@ java {
     }
 }
 
+bootJar {
+    archiveBaseName = 'sparta-project'
+    archiveVersion = '0.0.1-SNAPSHOT'
+}
+
 jar {
-    archiveBaseName.set('sparta-project')
+    enabled = false
+}
+
+tasks.jar {
+    archiveBaseName.set('sparta-project')  // JAR 파일 이름 설정
     archiveVersion.set('0.0.1-SNAPSHOT')
 }
 
@@ -88,7 +97,6 @@ def querydslSrcDir = 'src/main/generated'
 clean {
     delete file(querydslSrcDir)
 }
-
 
 tasks.named('test') {
     useJUnitPlatform()
