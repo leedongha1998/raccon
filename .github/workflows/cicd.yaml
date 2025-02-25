@@ -93,9 +93,6 @@ jobs:
             docker ps -a | grep springboot-app && docker stop springboot-app || true
             docker ps -a | grep springboot-app && docker rm springboot-app || true
             
-            docker run -d -p 8080:8080 --name springboot-app ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
-            
-            docker stop ${{ env.DOCKER_IMAGE_NAME }} || true
-            docker rm ${{ env.DOCKER_IMAGE_NAME }} || true
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
+      
             docker run -d -p 8080:8080 --name springboot-app ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
