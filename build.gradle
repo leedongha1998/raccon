@@ -13,6 +13,11 @@ java {
     }
 }
 
+jar {
+    archiveBaseName.set('sparta-project')
+    archiveVersion.set('0.0.1-SNAPSHOT')
+}
+
 repositories {
     mavenCentral()
 }
