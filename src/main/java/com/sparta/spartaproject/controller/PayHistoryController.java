@@ -59,14 +59,15 @@ public class PayHistoryController {
     @Description(
         "owner - 내 가게 결제 내역 조회하기"
     )
-    @GetMapping("/owner")
+    @GetMapping("/owner/{storeId}")
     public ResponseEntity<Page<PayHistoryDetailDto>> getPayHistoriesForOwner(
         @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
         @RequestParam(value = "size", required = false) Integer size,
-        @RequestParam(value = "sortDirection", required = false) String sortDirection
+        @RequestParam(value = "sortDirection", required = false) String sortDirection,
+        @PathVariable("storeId") UUID storeId
     ) {
         Pageable customPageable = pageableConfig.customPageable(page, size, sortDirection);
-        return ResponseEntity.ok(payHistoryService.getPayHistoriesForOwner(customPageable));
+        return ResponseEntity.ok(payHistoryService.getPayHistoriesForOwner(customPageable, storeId));
     }
 
     @Description(

@@ -77,9 +77,9 @@ public class PayHistoryService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PayHistoryDetailDto> getPayHistoriesForOwner(Pageable customPageable) {
+    public Page<PayHistoryDetailDto> getPayHistoriesForOwner(Pageable customPageable, UUID storeId) {
         User user = getUser();
-        Store store = storeService.getStoreByOwnerId(user.getId());
+        Store store = storeService.getStoreById(storeId);
 
         if (user.getRole() != Role.OWNER) {
             throw new BusinessException(FORBIDDEN);
