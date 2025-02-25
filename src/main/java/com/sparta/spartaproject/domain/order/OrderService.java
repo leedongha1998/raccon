@@ -178,9 +178,17 @@ public class OrderService {
     @Transactional
     public void rejectOrder(UUID orderId) {
         Order order = getOrderById(orderId);
-        order.updateStatus(OrderStatus.REFUSE);
+        order.updateStatus(OrderStatus.REJECT);
 
         log.info("주문: {}, 주문 거절", orderId);
+    }
+
+    @Transactional
+    public void finishOrder(UUID orderId) {
+        Order order = getOrderById(orderId);
+        order.updateStatus(OrderStatus.FINISH);
+
+        log.info("주문: {}, 주문 준비 완료", orderId);
     }
 
     @Transactional
@@ -199,5 +207,9 @@ public class OrderService {
     public Order getOrderById(UUID orderId) {
         return orderRepository.findByIdAndIsDeletedIsFalse(orderId)
             .orElseThrow(() -> new BusinessException(ORDER_NOT_EXIST));
+    }
+
+    public Integer countAcceptOrderByStoreId(UUID storeId) {
+        return orderRepository.countByStoreIdAndOrderStatusIsAccept(storeId);
     }
 }

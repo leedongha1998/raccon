@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -81,5 +83,23 @@ public class CategoryService {
 
     public Boolean existsCategoryByName(String name) {
         return categoryRepository.existsByName(name);
+    }
+
+    public List<Category> getAllCategories(List<UUID> categoriesIds) {
+        List<Category> newCategories = categoryRepository.findByIdIn(categoriesIds);
+
+        Set<UUID> validCategoryIds = newCategories.stream()
+            .map(Category::getId)
+            .collect(Collectors.toSet());
+
+        List<UUID> invalidCategoryIds = categoriesIds.stream()
+            .filter(id -> !validCategoryIds.contains(id))
+            .toList();
+
+        if (!invalidCategoryIds.isEmpty()) {
+            throw new BusinessException(ErrorCode.CATEGORY_NOT_FOUND);
+        }
+
+        return newCategories;
     }
 }

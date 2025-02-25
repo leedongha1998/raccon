@@ -59,6 +59,7 @@ public class Order extends BaseEntity {
     private String address;
 
     @Column(
+        name = "status",
         nullable = false
     )
     @Enumerated(EnumType.STRING)
