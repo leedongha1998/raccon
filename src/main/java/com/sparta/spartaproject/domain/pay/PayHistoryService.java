@@ -38,7 +38,6 @@ public class PayHistoryService {
     private final PayHistoryMapper payHistoryMapper;
     private final PayHistoryRepository payHistoryRepository;
 
-    private final Integer size = 10;
     private final StoreService storeService;
 
     @Transactional(readOnly = true)
