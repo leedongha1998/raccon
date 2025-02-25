@@ -62,6 +62,7 @@ public enum ErrorCode {
     STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "가게 정보가 존재하지 않습니다."),
     STORE_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "가게 정보에 대한 권한이 존재하지 않습니다."),
     ALREADY_IS_TRUE(HttpStatus.BAD_REQUEST, "이미 허가된 가게입니다."),
+    STORE_HAS_UNPROCESSED_ORDERS(HttpStatus.BAD_REQUEST, "완료되지 않은 주문이 있어 가게를 삭제할 수 없습니다."),
 
     // 카테고리
     CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "카테고리 정보가 존재하지 않습니다."),

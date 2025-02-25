@@ -1,5 +1,6 @@
 package com.sparta.spartaproject.domain.store;
 
+import com.sparta.spartaproject.domain.CircularService;
 import com.sparta.spartaproject.domain.category.Category;
 import com.sparta.spartaproject.domain.category.CategoryService;
 import com.sparta.spartaproject.domain.image.EntityType;
@@ -45,9 +46,9 @@ public class StoreService {
     private final StoreRepository storeRepository;
     private final CategoryService categoryService;
     private final StoreCategoryMapper storeCategoryMapper;
-    private final StoreCategoryService storeCategoryService;
     private final StoreCategoryRepository storeCategoryRepository;
     private final ImageService imageService;
+    private final CircularService circularService;
 
     @Transactional
     public void createStore(CreateStoreRequestDto request, List<MultipartFile> imageList) {
@@ -154,7 +155,7 @@ public class StoreService {
     @CacheEvict(value = "store", key = "#p0")
     public void updateStore(UUID id, UpdateStoreRequestDto update, List<MultipartFile> imageList) {
         User user = userService.loginUser();
-        Store store = getStoreById(id);
+        Store store = storeRepository.getStoreByStoreId(id);
 
         if (user.getRole() == Role.OWNER && !user.getId().equals(store.getOwner().getId())) {
             throw new BusinessException(ErrorCode.STORE_UNAUTHORIZED);
@@ -171,10 +172,14 @@ public class StoreService {
             });
         }
 
-        // TODO: 카테고리 변경하는 로직 생각하기
+        List<Category> newCategories = circularService.getCategoryService().getAllCategories(update.categoriesId());
 
-        List<Category> categoryList = storeCategoryService.getCategoriesByStore(store);
+        List<StoreCategory> storeCategories = convertCategoriesToStoreCategories(newCategories, store);
 
+        store.getStoreCategories().clear();
+        store.getStoreCategories().addAll(storeCategories);
+
+        storeRepository.save(store);
         log.info("음식점: {}, 수정 완료", id);
     }
 
@@ -203,7 +208,9 @@ public class StoreService {
             throw new BusinessException(ErrorCode.STORE_UNAUTHORIZED);
         }
 
-        // TODO: 완료되지 않은 주문이 있을 경우, 가게 삭제 X
+        if (circularService.getOrderService().countAcceptOrderByStoreId(store.getId()) != 0) {
+            throw new BusinessException(ErrorCode.STORE_HAS_UNPROCESSED_ORDERS);
+        }
 
         store.delete();
 
@@ -258,5 +265,11 @@ public class StoreService {
     public Store getStoreByOwnerId(Long ownerId) {
         return storeRepository.findByOwnerIdAndIsDeletedIsFalse(ownerId)
             .orElseThrow(() -> new BusinessException(ErrorCode.STORE_NOT_FOUND));
+    }
+
+    private List<StoreCategory> convertCategoriesToStoreCategories(List<Category> categories, Store store) {
+        return categories.stream().map(
+            category -> storeCategoryMapper.toStoreCategory(store, category)
+        ).toList();
     }
 }
