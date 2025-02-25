@@ -46,7 +46,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: sparta-project-0.0.1-SNAPSHOT.jar
-          path: ${{ env.PROJECT_JAR_NAME }}
+          path: build/libs/${{ env.PROJECT_JAR_NAME }}
 
       - name: Copy JAR file to docker context
         run: cp build/libs/${{ env.PROJECT_JAR_NAME }} .
