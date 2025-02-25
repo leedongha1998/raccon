@@ -54,7 +54,7 @@ public class OrderController {
         "owner - 주문 내역 전체 조회"
     )
     @GetMapping("/owner/stores/{storeId}")
-    @PreAuthorize("hasAuthority('OWNER')")
+//    @PreAuthorize("hasAuthority('OWNER')")
     public ResponseEntity<Page<OrderDto>> getOrdersForOwner(
         @PathVariable UUID storeId,
         @Min(value = 1, message = "페이지 번호는 1 이상이어야 합니다.")
@@ -100,6 +100,16 @@ public class OrderController {
     @PreAuthorize("hasAnyAuthority('OWNER', 'MASTER', 'MANAGER')")
     public ResponseEntity<Void> rejectOrder(@PathVariable("id") UUID id) {
         orderService.rejectOrder(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @Description(
+        "주문 완료"
+    )
+    @PatchMapping("/{id}/finish")
+    @PreAuthorize("hasAnyAuthority('OWNER', 'MASTER', 'MANAGER')")
+    public ResponseEntity<Void> finishOrder(@PathVariable(value = "id") UUID id) {
+        orderService.finishOrder(id);
         return ResponseEntity.ok().build();
     }
 

@@ -99,5 +99,12 @@ public interface StoreRepository extends JpaRepository<Store, UUID> {
     )
     Page<Store> findAllByUnConfirmed(@Param("name") String name, Pageable pageable);
 
-
+    @Query(
+        "SELECT DISTINCT s " +
+            "FROM Store s " +
+            "LEFT JOIN FETCH s.storeCategories sc " +
+            "LEFT JOIN FETCH sc.category c " +
+            "WHERE s.id = :storeId "
+    )
+    Store getStoreByStoreId(@Param("storeId") UUID storeId);
 }

@@ -60,4 +60,12 @@ public interface OrderRepository extends JpaRepository<Order, UUID> {
             "WHERE o.id = :orderId"
     )
     Order findByOrderId(@Param("orderId") UUID orderId);
+
+    @Query(
+        "SELECT COUNT(o.id) " +
+            "FROM Order o " +
+            "WHERE o.status = 'ACCEPT' " +
+            "AND o.store.id = :storeId"
+    )
+    Integer countByStoreIdAndOrderStatusIsAccept(@Param("storeId") UUID storeId);
 }
