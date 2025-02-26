@@ -2,7 +2,7 @@ FROM openjdk:17-alpine
 
 COPY build/libs/*.jar app.jar
 
-ENV PROFILE_NAME raccoon
+ENV PROFILE_NAME dev
 
 RUN ls -l
 
