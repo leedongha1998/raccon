@@ -13,8 +13,8 @@ public interface StoreRepository extends JpaRepository<Store, UUID> {
     @Query(
         "SELECT COUNT(DISTINCT s) " +
             "FROM Store s " +
-            "WHERE s.isDeleted IS FALSE " +
-            "AND s.isConfirmed IS TRUE " +
+            "WHERE s.isDeleted = FALSE " +
+            "AND s.isConfirmed = TRUE " +
             "AND s.name LIKE CONCAT('%', :name, '%')"
     )
     Long countStoreByName(@Param("name") String name);
@@ -24,8 +24,8 @@ public interface StoreRepository extends JpaRepository<Store, UUID> {
             "FROM Store s " +
             "LEFT JOIN FETCH s.storeCategories sc " +
             "LEFT JOIN FETCH sc.category c " +
-            "WHERE s.isDeleted IS FALSE " +
-            "AND s.isConfirmed IS TRUE " +
+            "WHERE s.isDeleted = FALSE " +
+            "AND s.isConfirmed = TRUE " +
             "AND s.name LIKE CONCAT('%', :name, '%')"
     )
     Page<Store> findAllStoreList(
@@ -38,8 +38,8 @@ public interface StoreRepository extends JpaRepository<Store, UUID> {
             "FROM Store s " +
             "LEFT JOIN FETCH s.storeCategories sc " +
             "LEFT JOIN FETCH sc.category c " +
-            "WHERE s.isDeleted IS FALSE " +
-            "AND s.isConfirmed IS TRUE " +
+            "WHERE s.isDeleted = FALSE " +
+            "AND s.isConfirmed = TRUE " +
             "AND s.id = :storeId"
     )
     Store getStoreById(@Param("storeId") UUID storeId);
@@ -49,7 +49,7 @@ public interface StoreRepository extends JpaRepository<Store, UUID> {
             "FROM Store s " +
             "LEFT JOIN FETCH s.storeCategories sc " +
             "LEFT JOIN FETCH sc.category c " +
-            "WHERE s.isDeleted IS FALSE " +
+            "WHERE s.isDeleted = FALSE " +
             "AND s.owner.id = :ownerId"
     )
     Store findStoreListByOwner(
@@ -85,7 +85,7 @@ public interface StoreRepository extends JpaRepository<Store, UUID> {
     @Query(
         "SELECT count(DISTINCT s) " +
             "FROM Store  s " +
-            "WHERE s.isConfirmed IS FALSE"
+            "WHERE s.isConfirmed = FALSE"
     )
     Long countUnconfirmed();
 
@@ -94,7 +94,7 @@ public interface StoreRepository extends JpaRepository<Store, UUID> {
             "FROM Store  s " +
             "LEFT JOIN FETCH s.storeCategories sc " +
             "LEFT JOIN FETCH sc.category c " +
-            "WHERE s.isConfirmed IS FALSE " +
+            "WHERE s.isConfirmed = FALSE " +
             "AND s.name LIKE CONCAT('%', :name, '%')"
     )
     Page<Store> findAllByUnConfirmed(@Param("name") String name, Pageable pageable);
