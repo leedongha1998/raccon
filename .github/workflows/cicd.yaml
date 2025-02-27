@@ -40,13 +40,13 @@ jobs:
         run: ls -lah build/libs/
 
       - name: chmod +r
-        run: chmod +r ${{ env.PROJECT_JAR_NAME }}
+        run: chmod +r build/libs/${{ env.PROJECT_JAR_NAME }}
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: sparta-project-0.0.1-SNAPSHOT.jar
-          path: ${{ env.PROJECT_JAR_NAME }}
+          path: build/libs/${{ env.PROJECT_JAR_NAME }}
 
       - name: Copy JAR file to docker context
         run: cp build/libs/${{ env.PROJECT_JAR_NAME }} .
@@ -109,4 +109,4 @@ jobs:
             
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
       
-            docker run -d -p 8080:8080 --name springboot-app -e "SPRING_PROFILES_ACTIVE=dev" ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
+            docker run -d -p 8080:8080 --name springboot-app -e SPRING_PROFILES_ACTIVE=dev ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
